@@ -17,11 +17,11 @@ def update_tail(head, tail):
     # same row?
     if tail[1] == head[1]:
         # update tail column to get one step closer = the average
-        newTail = [(tail[0] + head[0]) // 2, tail[1]]
+        return [(tail[0] + head[0]) // 2, tail[1]]
 
     # same column?
     elif tail[0] == head[0]:
-        newTail = [tail[0], (tail[1] + head[1]) // 2]
+        return [tail[0], (tail[1] + head[1]) // 2]
 
     # diagonal
     else:
@@ -35,12 +35,7 @@ def update_tail(head, tail):
 
         for step in steps:
             if step in edges:
-                newTail = step
-
-    if newTail == None:
-        print("NONE!")
-    else:
-        return newTail
+                return step
 
 
 def update_head(head, direction):
@@ -98,8 +93,6 @@ def main():
     positions = [[0, 0] for i in range(10)]
     track = [(0, 0)]
 
-    # print_board(current_head, current_tail, 15)
-
     # loop
     for move in instructions:
         # update head one step at a time
@@ -116,11 +109,14 @@ def main():
                     if i == len(positions) - 1:
                         track.append((positions[i][0], positions[i][1]))
 
+            # GRAPHICALLY PRINT BOARD
             # print_board(positions, 40)
 
-    # turn into set
-    # print_trace(track, 40)
+    # turn into set and count unique positions
     print(len(set(track)))
+
+    # GRAPHICALLY PRINT TACE
+    # print_trace(track, 40)
 
 
 if __name__ == "__main__":
