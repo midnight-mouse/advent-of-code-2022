@@ -1,5 +1,3 @@
-import numpy as np
-
 """
 Parse input:
 monkeys = {
@@ -13,7 +11,7 @@ monkeys = {
 }
 """
 
-with open("input-small.txt") as f:
+with open("input.txt") as f:
     contents = f.read()
 
 monkeys = {}
@@ -27,7 +25,7 @@ for i, m_desc in enumerate(descriptions):
     for stat, value in zip(stats, m_desc.split("\n")[1:]):
         if stat == "items":
             add = value.strip().replace("Starting items: ", "").split(", ")
-            add = np.array([int(a) for a in add])
+            add = [int(a) for a in add]
         if stat == "operation":
             add = value.strip().replace("Operation: new = old ", "").split(" ")
         if stat == "test":
@@ -41,9 +39,12 @@ for i, m_desc in enumerate(descriptions):
 
     monkeys[i]["inspects"] = 0
 
+lcm = 1
+for m in monkeys:
+    lcm *= monkeys[m]["test"]
+
 # Play the game!
 for i in range(10000):
-    print(f"Round {i+1}...")
 
     for m in monkeys:
         monk = monkeys[m]
@@ -63,10 +64,12 @@ for i in range(10000):
                 else:
                     new = old * int(monk["operation"][1])
 
+            # divide
+            new %= lcm
+
             # check if divisible
             if new % monk["test"] == 0:
                 # divide by this number
-                new = new // monk["test"]
                 monkeys[monk["true"]]["items"].append(new)
 
             else:
